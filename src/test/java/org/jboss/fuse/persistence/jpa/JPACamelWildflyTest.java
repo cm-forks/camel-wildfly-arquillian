@@ -12,6 +12,7 @@ import org.jboss.shrinkwrap.resolver.api.maven.Maven;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.wildfly.extension.camel.CamelAware;
 import org.wildfly.extension.camel.CamelContextRegistry;
 
 import javax.persistence.EntityManager;
@@ -37,10 +38,8 @@ public class JPACamelWildflyTest {
     public static JavaArchive deployment() {
         JavaArchive archive = ShrinkWrap.create(JavaArchive.class, "camel-jpa-test.jar");
         archive.addClass(Account.class);
-        archive.addAsResource("org/jboss/fuse/persistence/jpa/persistence-local.xml",
-                "META-INF/persistence.xml");
-        archive.addAsResource("org/jboss/fuse/persistence/jpa/jpa-camel-context.xml",
-                "META-INF/jboss-camel-context.xml");
+        archive.addAsResource("org/jboss/fuse/persistence/jpa/persistence-local.xml", "META-INF/persistence.xml");
+        archive.addAsResource("org/jboss/fuse/persistence/jpa/jpa-camel-context.xml", "META-INF/jboss-camel-context.xml");
         archive.merge(thirdPartyLibs());
         return archive;
     }
