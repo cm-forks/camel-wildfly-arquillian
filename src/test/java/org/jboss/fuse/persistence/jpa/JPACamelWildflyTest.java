@@ -8,6 +8,7 @@ import org.jboss.arquillian.test.api.ArquillianResource;
 import org.jboss.fuse.persistence.jpa.model.Account;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
+import org.jboss.shrinkwrap.resolver.api.maven.Maven;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -22,17 +23,29 @@ public class JPACamelWildflyTest {
     @ArquillianResource
     CamelContextRegistry contextRegistry;
 
+    protected static final String[] DEPENDENCIES = { "org.wildfly.camel:wildfly-camel-subsystem:3.3.0" };
+
+    protected static JavaArchive thirdPartyLibs() {
+        JavaArchive lib = ShrinkWrap.create(JavaArchive.class, "libs.jar");
+        for (String dependency : DEPENDENCIES) {
+            lib.merge(Maven.resolver().resolve(dependency).withoutTransitivity().asSingle(JavaArchive.class));
+        }
+        return lib;
+    }
+
     @Deployment
     public static JavaArchive deployment() {
         JavaArchive archive = ShrinkWrap.create(JavaArchive.class, "camel-jpa-test.jar");
         archive.addClass(Account.class);
-        archive.addAsResource("org/jboss/fuse/persistence/jpa/persistence-local.xml", "META-INF/persistence.xml");
-        archive.addAsResource("org/jboss/fuse/persistence/jpa/jpa-camel-context.xml", "META-INF/jboss-camel-context.xml");
+        archive.addAsResource("org/jboss/fuse/persistence/jpa/persistence-local.xml",
+                "META-INF/persistence.xml");
+        archive.addAsResource("org/jboss/fuse/persistence/jpa/jpa-camel-context.xml",
+                "META-INF/jboss-camel-context.xml");
+        archive.merge(thirdPartyLibs());
         return archive;
     }
 
-    @Test
-    public void testJpaCamelRoute() throws Exception {
+    @Test public void testJpaCamelRoute() throws Exception {
 
         CamelContext camelctx = contextRegistry.getCamelContext("jpa-context");
         Assert.assertNotNull("Expected jpa-context to not be null", camelctx);

@@ -140,6 +140,14 @@
             <version>${wildfly.version}</version>
         </dependency>
 
+        <dependency>
+            <groupId>org.jboss.shrinkwrap.resolver</groupId>
+            <artifactId>shrinkwrap-resolver-depchain</artifactId>
+            <version>2.2.0</version>
+            <scope>test</scope>
+            <type>pom</type>
+        </dependency>
+
         <!--        <dependency>
                     <groupId>org.jboss.arquillian.core</groupId>
                     <artifactId>arquillian-core-api</artifactId>
