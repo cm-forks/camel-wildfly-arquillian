@@ -23,7 +23,7 @@ public class JPACamelWildflyTest {
     @ArquillianResource
     CamelContextRegistry contextRegistry;
 
-    protected static final String[] DEPENDENCIES = { "org.wildfly.camel:wildfly-camel-subsystem:3.3.0" };
+    protected static final String[] DEPENDENCIES = { "org.wildfly.camel:wildfly-camel-subsystem:3.3.0","org.wildfly:wildfly-arquillian-protocol-jmx:1.0.1.Final" };
 
     protected static JavaArchive thirdPartyLibs() {
         JavaArchive lib = ShrinkWrap.create(JavaArchive.class, "libs.jar");
